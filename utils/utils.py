@@ -102,8 +102,10 @@ def read_dataset(root_dir, archive_name, dataset_name):
                                        y_test.copy())
     else:
         file_name = os.path.join(root_dir, '/OutputNumpys')
+        print("file_name: " + file_name)
         
         file_name_x_train = os.path.join(file_name, 'X_train.npy')
+        print("file_name_x_train: " + file_name_x_train)
         file_name_x_test = os.path.join(file_name, 'X_test.npy')
         file_name_y_train = os.path.join(file_name, 'y_train.npy')
         file_name_y_test = os.path.join(file_name, 'y_test.npy')
