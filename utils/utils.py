@@ -59,7 +59,7 @@ def create_path(root_dir, classifier_name, archive_name):
 
 def read_dataset(root_dir, archive_name, dataset_name):
     datasets_dict = {}
-    cur_root_dir = root_dir.replace('-temp', '')
+    #cur_root_dir = root_dir.replace('-temp', '')
 
     if archive_name == 'mts_archive':
         file_name = cur_root_dir + '/archives/' + archive_name + '/' + dataset_name + '/'
