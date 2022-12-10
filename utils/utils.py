@@ -101,8 +101,7 @@ def read_dataset(root_dir, archive_name, dataset_name):
         datasets_dict[dataset_name] = (x_train.copy(), y_train.copy(), x_test.copy(),
                                        y_test.copy())
     else:
-        file_name = os.path.join(root_dir, '/OutputNumpys')
-        print("root_dir:  " + root_dir)
+        file_name = os.path.join(root_dir, 'OutputNumpys')
         
         print("file_name: " + file_name)
         
