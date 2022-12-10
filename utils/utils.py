@@ -101,7 +101,7 @@ def read_dataset(root_dir, archive_name, dataset_name):
         datasets_dict[dataset_name] = (x_train.copy(), y_train.copy(), x_test.copy(),
                                        y_test.copy())
     else:
-        file_name = os.path.join(root_dir, '/BiomusicDeepLearning/OutputNumpys')
+        file_name = os.path.join(root_dir, '/OutputNumpys')
         
         file_name_x_train = os.path.join(file_name, 'X_train.npy')
         file_name_x_test = os.path.join(file_name, 'X_test.npy')
