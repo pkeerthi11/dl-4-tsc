@@ -101,9 +101,18 @@ def read_dataset(root_dir, archive_name, dataset_name):
         datasets_dict[dataset_name] = (x_train.copy(), y_train.copy(), x_test.copy(),
                                        y_test.copy())
     else:
-        file_name = cur_root_dir + '/archives/' + archive_name + '/' + dataset_name + '/' + dataset_name
-        x_train, y_train = readucr(file_name + '_TRAIN')
-        x_test, y_test = readucr(file_name + '_TEST')
+        file_name = os.path.join(root_dir, '/BiomusicDeepLearning/OutputNumpys')
+        
+        file_name_x_train = os.path.join(file_name, 'X_train.npy')
+        file_name_x_test = os.path.join(file_name, 'X_test.npy')
+        file_name_y_train = os.path.join(file_name, 'y_train.npy')
+        file_name_y_test = os.path.join(file_name, 'y_test.npy')
+        
+        x_train = np.load(file_name_x_train)
+        x_test = np.load(file_name_x_test)
+        y_train = np.load(file_name_y_train)
+        y_test = np.load(file_name_y_test)
+
         datasets_dict[dataset_name] = (x_train.copy(), y_train.copy(), x_test.copy(),
                                        y_test.copy())
 
