@@ -39,7 +39,7 @@ def fit_classifier():
         x_test = x_test.reshape((x_test.shape[0], x_test.shape[1], 1))
 
     input_shape = x_train.shape[1:]
-    classifier = create_classifier(classifier_name, input_shape, nb_classes, output_directory)
+    classifier = create_classifier(classifier_name, input_shape, nb_classes, output_directory, verbose = True)
 
     classifier.fit(x_train, y_train, x_test, y_test, y_true)
 
