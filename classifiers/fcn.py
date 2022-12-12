@@ -35,8 +35,9 @@ class Classifier_FCN:
 		conv3 = keras.layers.Conv1D(128, kernel_size=3,padding='same')(conv2)
 		conv3 = keras.layers.BatchNormalization()(conv3)
 		conv3 = keras.layers.Activation('relu')(conv3)
-
-		gap_layer = keras.layers.GlobalAveragePooling1D()(conv3)
+		
+		gap_layer = keras.layers.Dropout(rate = 0.5)(conv3)
+		gap_layer = keras.layers.GlobalAveragePooling1D()(gap_layer)
 
 		output_layer = keras.layers.Dense(nb_classes, activation='softmax')(gap_layer)
 
