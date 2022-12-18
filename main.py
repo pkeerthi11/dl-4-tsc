@@ -80,7 +80,7 @@ def create_classifier(classifier_name, input_shape, nb_classes, output_directory
 ############################################### main
 
 # change this directory for your machine
-root_dir = '/home/pkeerthi/projects/def-sblain/pkeerthi/BiomusicDeepLearning/'
+root_dir = '/home/pkeerthi/projects/def-sblain/pkeerthi/DeepLearningTrainingResults/'
 
 if sys.argv[1] == 'run_all':
     for classifier_name in CLASSIFIERS:
