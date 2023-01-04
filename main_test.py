@@ -78,8 +78,6 @@ nb_classes = len(np.unique(np.concatenate((y_train, y_test), axis=0)))
 
 # transform the labels from integers to one hot vectors
 enc = sklearn.preprocessing.OneHotEncoder(categories='auto')
-enc.fit(y_test, axis=0).reshape(-1, 1)
-y_test = enc.transform(y_test.reshape(-1, 1)).toarray()
 
 enc.fit(np.concatenate((y_train, y_test), axis=0).reshape(-1, 1))
 y_train = enc.transform(y_train.reshape(-1, 1)).toarray()
