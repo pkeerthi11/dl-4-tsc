@@ -133,12 +133,12 @@ for count, classifier_name in enumerate(classifier_names):
         test_balanced_accuracies.append(bal_acc)
         
     if count == 0:
-        df_acc = pd.DataFrame({classifier_name: acc})
-        df_bal_acc = pd.DataFrame({classifier_name: bal_acc})
+        df_acc = pd.DataFrame({classifier_name: test_accuracies})
+        df_bal_acc = pd.DataFrame({classifier_name: test_balanced_accuracies})
         
     else:
-        df_acc[classifier_name] = acc
-        df_bal_acc[classifier_name] = bal_acc
+        df_acc[classifier_name] = test_accuracies
+        df_bal_acc[classifier_name] = test_balanced_accuracies
         
     
     bootstrap_train_mean = np.mean(test_accuracies)
