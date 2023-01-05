@@ -15,6 +15,7 @@ from utils.utils import viz_cam
 import tensorflow.keras as keras
 import tensorflow as tf
 import os
+import pandas as pd
 import numpy as np
 import h5py
 import sys
@@ -24,7 +25,7 @@ from utils.constants import CLASSIFIERS
 from utils.constants import ARCHIVE_NAMES
 from utils.constants import ITERATIONS
 from utils.utils import read_all_datasets
-from sklearn.metrics import accuracy_score, balanced_accuracy_score
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, confusion_matrix
 
 def create_classifier(classifier_name, input_shape, nb_classes, output_directory, verbose=False):
     if classifier_name == 'fcn':
@@ -91,50 +92,68 @@ if len(x_test.shape) == 2:  # if univariate
     x_test = x_test.reshape((x_test.shape[0], x_test.shape[1], 1))
 
 input_shape = x_test.shape[1:]
-classifier = create_classifier(classifier_name, input_shape, nb_classes, output_directory + classifier_name, verbose = True)
 
-model_path = output_directory + classifier_name + '/best_model.hdf5'
-model = keras.models.load_model(model_path)
-y_pred = model.predict(x_test)
-y_pred = np.argmax(y_pred, axis=1)
+classifier_names = ["fcn", "mlp", "cnn"]
 
-
-acc = accuracy_score(y_true, y_pred)
-bal_acc = balanced_accuracy_score(y_true, y_pred)
-
-
-
-print("Accuracy: ", acc, " Balanced accuracy: ", bal_acc)
-
-rng = np.random.RandomState(seed=12345)
-idx = np.arange(y_test.shape[0])
-
-test_accuracies = []
-test_balanced_accuracies = []
-
-
-for i in range(200):
-
-    pred_idx = rng.choice(idx, size=idx.shape[0], replace=True)
+for i, classifier_name in enumerate(classifier_names):
+    print("Metrics for: ", classifier_name)
+    classifier = create_classifier(classifier_name, input_shape, nb_classes, output_directory + classifier_name, verbose = True)
     
-    acc = accuracy_score(y_true[pred_idx], y_pred[pred_idx])
-    bal_acc = balanced_accuracy_score(y_true[pred_idx], y_pred[pred_idx])
     
-    test_accuracies.append(acc)
-    test_balanced_accuracies.append(bal_acc)
+    
+    model_path = output_directory + classifier_name + '/best_model.hdf5'
+    model = keras.models.load_model(model_path)
+    y_pred = model.predict(x_test)
+    y_pred = np.argmax(y_pred, axis=1)
+    
+    
+    acc = accuracy_score(y_true, y_pred)
+    bal_acc = balanced_accuracy_score(y_true, y_pred)
+    
+    
+    
+    print("\nAccuracy: ", acc, " Balanced accuracy: ", bal_acc)
+    print(confusion_matrix(y_true, y_pred))
+    
+    rng = np.random.RandomState(seed=12345)
+    idx = np.arange(y_test.shape[0])
+    
+    test_accuracies = []
+    test_balanced_accuracies = []
+    
+    
+    for i in range(1000):
+    
+        pred_idx = rng.choice(idx, size=idx.shape[0], replace=True)
+        
+        acc = accuracy_score(y_true[pred_idx], y_pred[pred_idx])
+        bal_acc = balanced_accuracy_score(y_true[pred_idx], y_pred[pred_idx])
+        
+        test_accuracies.append(acc)
+        test_balanced_accuracies.append(bal_acc)
+        
+    if i == 0:
+        df_acc = pd.DataFrame({classifier_name: acc})
+        df_bal_acc = pd.DataFrame({classifier_name: bal_acc})
+        
+    else:
+        df_acc[classifier_name] = acc
+        df_bal_acc[classifier_name] = bal_acc
+        
+    
+    bootstrap_train_mean = np.mean(test_accuracies)
+    bootstrap_train_mean_bal = np.mean(test_balanced_accuracies)
+    
+    ci_lower = np.percentile(test_accuracies, 2.5)
+    ci_upper = np.percentile(test_accuracies, 97.5)
+    print("\nMean Accuracy: ", bootstrap_train_mean)
+    print(ci_lower, ci_upper)
+    
+    ci_lower = np.percentile(test_balanced_accuracies, 2.5)
+    ci_upper = np.percentile(test_balanced_accuracies, 97.5)
+    print("\nMean Balanced Accuracy: ", bootstrap_train_mean_bal)
+    print(ci_lower, ci_upper)
 
-bootstrap_train_mean = np.mean(test_accuracies)
-bootstrap_train_mean_bal = np.mean(test_balanced_accuracies)
-
-ci_lower = np.percentile(test_accuracies, 2.5)
-ci_upper = np.percentile(test_accuracies, 97.5)
-print("\nMean Accuracy: ", bootstrap_train_mean)
-print(ci_lower, ci_upper)
-
-ci_lower = np.percentile(test_balanced_accuracies, 2.5)
-ci_upper = np.percentile(test_balanced_accuracies, 97.5)
-print("\nMean Balanced Accuracy: ", bootstrap_train_mean_bal)
-print(ci_lower, ci_upper)
-
-
+df_acc.to_csv(output_directory)
+df_bal_acc.to_csv(output_directory)
 
