@@ -115,6 +115,11 @@ def read_dataset(root_dir, archive_name, dataset_name):
         x_test = np.load(file_name_x_test)
         y_train = np.load(file_name_y_train)
         y_test = np.load(file_name_y_test)
+        
+        x_train = x_train[y_train != 0]
+        x_test = x_test[y_test != 0]
+        y_train = y_train[y_train != 0]
+        y_test = y_test[y_test != 0]
 
         datasets_dict[dataset_name] = (x_train.copy(), y_train.copy(), x_test.copy(),
                                        y_test.copy())
