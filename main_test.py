@@ -95,7 +95,7 @@ input_shape = x_test.shape[1:]
 
 classifier_names = ["fcn", "mlp", "cnn"]
 
-for i, classifier_name in enumerate(classifier_names):
+for count, classifier_name in enumerate(classifier_names):
     print("Metrics for: ", classifier_name)
     classifier = create_classifier(classifier_name, input_shape, nb_classes, output_directory + classifier_name, verbose = True)
     
@@ -132,7 +132,7 @@ for i, classifier_name in enumerate(classifier_names):
         test_accuracies.append(acc)
         test_balanced_accuracies.append(bal_acc)
         
-    if i == 0:
+    if count == 0:
         df_acc = pd.DataFrame({classifier_name: acc})
         df_bal_acc = pd.DataFrame({classifier_name: bal_acc})
         
