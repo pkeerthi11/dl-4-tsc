@@ -154,6 +154,6 @@ for count, classifier_name in enumerate(classifier_names):
     print("\nMean Balanced Accuracy: ", bootstrap_train_mean_bal)
     print(ci_lower, ci_upper)
 
-df_acc.to_csv(output_directory)
-df_bal_acc.to_csv(output_directory)
+df_acc.to_csv(output_directory + "DeepLearningAccuracyBootstrapping.csv")
+df_bal_acc.to_csv(output_directory + "DeepLearningBalancedAccuracyBootstrapping.csv")
 
