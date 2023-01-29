@@ -93,7 +93,7 @@ if len(x_test.shape) == 2:  # if univariate
 
 input_shape = x_test.shape[1:]
 
-classifier_names = ["fcn", "mlp", "cnn"]
+classifier_names = ["fcn", "mlp", "cnn", "inception"]
 
 for count, classifier_name in enumerate(classifier_names):
     print("Metrics for: ", classifier_name)
